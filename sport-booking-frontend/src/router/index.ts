@@ -50,33 +50,29 @@ const router = createRouter({
           path: "booking/create",
           name: "booking-create",
           component: BookingCreatePage,
-          meta: {
-            requiresAuth: true,
-          },
+          // ชั่วคราว: เปิดให้ผู้ใช้ที่ยังไม่ล็อกอินเข้า flow การจองได้ก่อน
+          // หากต้องการกลับไปบังคับล็อกอินภายหลัง ให้ใส่ requiresAuth: true กลับมา
         },
         {
           path: "booking/summary",
           name: "booking-summary",
           component: BookingSummaryPage,
-          meta: {
-            requiresAuth: true,
-          },
+          // ชั่วคราว: เปิดให้ผู้ใช้ที่ยังไม่ล็อกอินเข้า flow การจองได้ก่อน
+          // หากต้องการกลับไปบังคับล็อกอินภายหลัง ให้ใส่ requiresAuth: true กลับมา
         },
         {
           path: "booking/history",
           name: "booking-history",
           component: BookingHistoryPage,
-          meta: {
-            requiresAuth: true,
-          },
+          // ชั่วคราว: เปิดให้ผู้ใช้ที่ยังไม่ล็อกอินดูประวัติการจองของ guest ได้
+          // หากต้องการกลับไปบังคับล็อกอินภายหลัง ให้ใส่ requiresAuth: true กลับมา
         },
         {
           path: "payment/upload/:id",
           name: "payment-upload",
           component: PaymentUploadPage,
-          meta: {
-            requiresAuth: true,
-          },
+          // ชั่วคราว: เปิดให้ผู้ใช้ที่ยังไม่ล็อกอินอัปโหลดสลิปจาก flow การจองได้
+          // หากต้องการกลับไปบังคับล็อกอินภายหลัง ให้ใส่ requiresAuth: true กลับมา
         },
         {
           path: "profile",

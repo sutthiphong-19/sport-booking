@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import { useAuthStore } from "@/stores/auth.store";
 import { useFieldStore } from "@/stores/field.store";
+import type { User } from "@/types/auth.type";
 import type { Booking, BookingSummary } from "@/types/booking.type";
 
 type BookingState = {
@@ -11,6 +12,20 @@ type BookingState = {
 
 const BOOKINGS_STORAGE_KEY = "sport_bookings";
 const BOOKING_SUMMARY_KEY = "booking_summary";
+const GUEST_BOOKING_USER_ID = "guest-booking-user";
+
+const getBookingUser = (user: User | null) => {
+  if (user) return user;
+
+  // ชั่วคราว: อนุญาตให้ผู้ใช้ที่ยังไม่ล็อกอินจองได้ โดยผูกข้อมูลไว้กับ guest user
+  // หากต้องการกลับไปบังคับล็อกอินภายหลัง ให้ลบ fallback นี้และใช้ authStore.user โดยตรง
+  return {
+    id: GUEST_BOOKING_USER_ID,
+    name: "Guest User",
+    email: "guest@sport-booking.local",
+    role: "USER" as const,
+  };
+};
 
 const getStoredBookings = (): Booking[] => {
   const raw = localStorage.getItem(BOOKINGS_STORAGE_KEY);
@@ -96,9 +111,10 @@ export const useBookingStore = defineStore("booking", {
     fetchMyBookings() {
       const authStore = useAuthStore();
       const allBookings = getStoredBookings();
+      const bookingUser = getBookingUser(authStore.user);
 
       this.bookings = allBookings.filter((booking) => {
-        return booking.userId === authStore.user?.id;
+        return booking.userId === bookingUser.id;
       });
     },
 
@@ -183,13 +199,10 @@ export const useBookingStore = defineStore("booking", {
 
     async confirmBooking(note?: string) {
       const authStore = useAuthStore();
+      const bookingUser = getBookingUser(authStore.user);
 
       if (!this.currentSummary) {
         throw new Error("Booking summary not found");
-      }
-
-      if (!authStore.user) {
-        throw new Error("User not found");
       }
 
       if (this.loading) {
@@ -226,7 +239,7 @@ export const useBookingStore = defineStore("booking", {
         const booking: Booking = {
           ...this.currentSummary,
           id: crypto.randomUUID(),
-          userId: authStore.user.id,
+          userId: bookingUser.id,
           status: "PENDING_PAYMENT",
           paymentStatus: "PENDING",
           note,
@@ -238,7 +251,7 @@ export const useBookingStore = defineStore("booking", {
         saveBookings(updatedBookings);
 
         this.bookings = updatedBookings.filter((item) => {
-          return item.userId === authStore.user?.id;
+          return item.userId === bookingUser.id;
         });
 
         return booking;
@@ -269,9 +282,10 @@ export const useBookingStore = defineStore("booking", {
         saveBookings(updatedBookings);
 
         const authStore = useAuthStore();
+        const bookingUser = getBookingUser(authStore.user);
 
         this.bookings = updatedBookings.filter((booking) => {
-          return booking.userId === authStore.user?.id;
+          return booking.userId === bookingUser.id;
         });
       } finally {
         this.loading = false;
