@@ -186,7 +186,7 @@ const insightCards = computed(() => [
             <Button
               label="เริ่มจองทันที"
               icon="pi pi-calendar-plus"
-              class="w-full !rounded-full !border-0 !bg-slate-950 !py-3 !font-semibold"
+              class="w-full !rounded-full !border-0 !bg-slate-950 !py-3 !font-semibold !text-white hover:!bg-emerald-700"
             />
           </RouterLink>
 
@@ -196,7 +196,7 @@ const insightCards = computed(() => [
               icon="pi pi-map-marker"
               severity="secondary"
               outlined
-              class="w-full !rounded-full !py-3 !font-semibold"
+              class="w-full !rounded-full !border-slate-400 !py-3 !font-semibold !text-slate-700 hover:!border-emerald-500 hover:!bg-emerald-50 hover:!text-emerald-700"
             />
           </a>
         </div>

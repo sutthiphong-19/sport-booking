@@ -156,7 +156,7 @@ const summaryCards = [
                 label="ดูรายละเอียดสนาม"
                 icon="pi pi-arrow-right"
                 iconPos="right"
-                class="w-full !rounded-full !border-0 !bg-slate-950 !py-3 !font-semibold"
+                class="w-full !rounded-full !border-0 !bg-slate-950 !py-3 !font-semibold !text-white hover:!bg-emerald-700"
               />
             </RouterLink>
           </div>
