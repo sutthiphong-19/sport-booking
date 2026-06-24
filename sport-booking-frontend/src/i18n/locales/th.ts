@@ -6,6 +6,7 @@ export default {
   nav: {
     home: "หน้าแรก",
     fields: "สนามกีฬา",
+    shoeRental: "เช่ารองเท้า",
     bookingHistory: "ประวัติการจอง",
     admin: "ผู้ดูแลระบบ",
     profile: "โปรไฟล์",
@@ -53,5 +54,6 @@ footer: {
   contactUs: "ติดต่อเรา",
   knowledge: "บทความน่ารู้",
 },
+
 
 };

@@ -6,6 +6,7 @@ export default {
   nav: {
     home: "Home",
     fields: "Fields",
+     shoeRental: "Shoe Rental",
     bookingHistory: "Booking History",
     admin: "Admin",
     profile: "Profile",
@@ -53,4 +54,5 @@ footer: {
   contactUs: "Contact Us",
   knowledge: "Articles",
 },
+
 };

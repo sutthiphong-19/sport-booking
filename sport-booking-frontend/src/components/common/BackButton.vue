@@ -28,8 +28,7 @@ const handleBack = () => {
     <Button
       label="กลับไปก่อนหน้า"
       icon="pi pi-arrow-left"
-      severity="secondary"
-      outlined
+      class="!border !border-slate-400 !bg-white !text-slate-700 hover:!border-emerald-500 hover:!bg-emerald-50 hover:!text-emerald-700"
       size="small"
       @click="handleBack"
     />

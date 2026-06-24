@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+
 import type { FieldFormPayload, SportField } from "@/types/field.type";
 
 type FieldState = {
@@ -13,7 +14,7 @@ const defaultFields: SportField[] = [
     id: "1",
     name: "สนามฟุตบอล A",
     sportType: "ฟุตบอล",
-    description: "สนามฟุตบอลหญ้าเทียม พร้อมไฟส่องสว่าง",
+    description: "สนามฟุตบอลหญ้าเทียม พร้อมไฟส่องสว่าง เหมาะสำหรับเกมจริงและซ้อมทีม",
     address: "กรุงเทพมหานคร",
     pricePerHour: 800,
     openTime: "08:00",
@@ -27,7 +28,7 @@ const defaultFields: SportField[] = [
     id: "2",
     name: "สนามฟุตซอล B",
     sportType: "ฟุตซอล",
-    description: "สนามฟุตซอลในร่ม เหมาะสำหรับทีมเล็ก",
+    description: "สนามฟุตซอลในร่ม พื้นเล่นมาตรฐาน เหมาะกับทีมขนาดเล็กและเกมหลังเลิกงาน",
     address: "กรุงเทพมหานคร",
     pricePerHour: 600,
     openTime: "09:00",
@@ -37,7 +38,35 @@ const defaultFields: SportField[] = [
     latitude: 13.7563,
     longitude: 100.5018,
   },
+  {
+    id: "3",
+    name: "สนามฟุตบอล C",
+    sportType: "ฟุตบอล",
+    description: "สนามฟุตบอลขนาดมาตรฐาน บรรยากาศโปร่ง เล่นสบาย เหมาะสำหรับแมตช์เย็นและนัดรวมทีม",
+    address: "กรุงเทพมหานคร",
+    pricePerHour: 800,
+    openTime: "08:00",
+    closeTime: "22:00",
+    imageUrl: "/fields/field-football.jpg",
+    isActive: true,
+    latitude: 13.7563,
+    longitude: 100.5018,
+  },
 ];
+
+const mergeWithDefaultFields = (fields: SportField[]): SportField[] => {
+  const mergedFields = [...fields];
+
+  for (const defaultField of defaultFields) {
+    const exists = mergedFields.some((field) => field.id === defaultField.id);
+
+    if (!exists) {
+      mergedFields.push(defaultField);
+    }
+  }
+
+  return mergedFields;
+};
 
 const getStoredFields = (): SportField[] => {
   const raw = localStorage.getItem(FIELDS_STORAGE_KEY);
@@ -48,7 +77,14 @@ const getStoredFields = (): SportField[] => {
   }
 
   try {
-    return JSON.parse(raw) as SportField[];
+    const parsedFields = JSON.parse(raw) as SportField[];
+    const mergedFields = mergeWithDefaultFields(parsedFields);
+
+    if (mergedFields.length !== parsedFields.length) {
+      localStorage.setItem(FIELDS_STORAGE_KEY, JSON.stringify(mergedFields));
+    }
+
+    return mergedFields;
   } catch {
     localStorage.setItem(FIELDS_STORAGE_KEY, JSON.stringify(defaultFields));
     return defaultFields;

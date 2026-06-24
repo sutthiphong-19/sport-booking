@@ -5,27 +5,27 @@ const { t } = useI18n();
 
 const partners = [
   {
-    name: "Dhipaya Insurance",
+    name: "xxxx",
     image: "/partners/partner-1.png",
   },
   {
-    name: "Pay Solutions",
+    name: "xxxx",
     image: "/partners/partner-2.png",
   },
   {
-    name: "PB Sport",
+    name: "xxxx Sport",
     image: "/partners/partner-3.png",
   },
   {
-    name: "BWT",
+    name: "xxxx",
     image: "/partners/partner-4.png",
   },
   {
-    name: "DEPA",
+    name: "xxxx",
     image: "/partners/partner-5.png",
   },
   {
-    name: "Dhipaya Insurance",
+    name: "xxxx",
     image: "/partners/partner-6.png",
   },
 ];

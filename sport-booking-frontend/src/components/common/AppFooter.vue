@@ -2,119 +2,96 @@
 import { useI18n } from "vue-i18n";
 
 const { t } = useI18n();
-
 const currentYear = new Date().getFullYear();
+
+const footerColumns = [
+  {
+    title: "Explore",
+    links: [
+      { label: t("nav.home"), to: "/" },
+      { label: t("nav.fields"), to: "/fields" },
+      { label: "หาเพื่อนเล่น", to: "/find-friends" },
+      { label: t("nav.shoeRental"), to: "/shoe-rental" },
+    ],
+  },
+  {
+    title: "Account",
+    links: [
+      { label: t("auth.login"), to: "/login" },
+      { label: t("auth.register"), to: "/register" },
+      { label: t("nav.bookingHistory"), to: "/booking/history" },
+      { label: t("nav.profile"), to: "/profile" },
+    ],
+  },
+  {
+    title: "Support",
+    links: [
+      { label: t("footer.faq"), to: "/" },
+      { label: t("footer.contactUs"), to: "/" },
+      { label: t("footer.knowledge"), to: "/" },
+      { label: "Terms & Privacy", to: "/" },
+    ],
+  },
+];
 </script>
 
 <template>
-  <footer>
-    <div class="bg-[#10b981] text-white">
-      <div class="mx-auto grid max-w-7xl gap-10 px-4 py-14 md:grid-cols-[1.3fr_1fr_1fr_1fr_1fr]">
-        <div>
-          <RouterLink to="/" class="inline-flex items-center text-3xl font-extrabold text-white">
-            match<br />day
-          </RouterLink>
+  <footer class="px-3 pb-4 pt-10 md:px-5 md:pt-14">
+    <div class="mx-auto max-w-7xl overflow-hidden rounded-[2rem] border border-slate-200/80 bg-slate-950 text-white shadow-[0_26px_80px_rgba(15,23,42,0.18)]">
+      <div class="grid gap-10 px-6 py-10 md:px-8 lg:grid-cols-[1.15fr_0.85fr] lg:gap-16 lg:py-12">
+        <div class="relative overflow-hidden rounded-[1.75rem] border border-white/10 bg-white/5 p-6 backdrop-blur">
+          <div class="absolute right-0 top-0 h-40 w-40 rounded-full bg-emerald-400/15 blur-3xl"></div>
 
-          <p class="mt-8 max-w-sm text-sm leading-7 text-white/90">
-            {{ t("footer.description") }}
-          </p>
+          <div class="relative">
+            <span class="eyebrow !bg-white/10 !text-emerald-200">Sport Booking Platform</span>
 
-          <div class="mt-6">
-            <a
-              href="#"
-              aria-label="Facebook"
-              class="inline-flex h-9 w-9 items-center justify-center rounded-full bg-white text-red-600 transition hover:scale-110"
-            >
-              <i class="pi pi-facebook text-lg"></i>
-            </a>
+            <h2 class="mt-4 max-w-xl text-3xl font-black tracking-tight md:text-4xl">
+              Experience a cleaner, faster way to reserve your next game.
+            </h2>
+
+            <p class="mt-4 max-w-2xl text-sm leading-7 text-slate-300 md:text-base">
+              {{ t("footer.description") }}
+            </p>
+
+            <div class="mt-8 grid gap-4 sm:grid-cols-3">
+              <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
+                <p class="text-2xl font-black">20+</p>
+                <p class="mt-1 text-sm text-slate-300">สนามยอดนิยมในระบบ</p>
+              </div>
+              <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
+                <p class="text-2xl font-black">24/7</p>
+                <p class="mt-1 text-sm text-slate-300">เปิดดูตารางและจองได้ทุกเวลา</p>
+              </div>
+              <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
+                <p class="text-2xl font-black">Fast</p>
+                <p class="mt-1 text-sm text-slate-300">ตรวจสอบราคาและสถานะได้ทันที</p>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div>
-          <h3 class="text-base font-bold">
-            {{ t("footer.forYou") }}
-          </h3>
+        <div class="grid gap-8 sm:grid-cols-3">
+          <div v-for="column in footerColumns" :key="column.title">
+            <h3 class="text-sm font-black uppercase tracking-[0.24em] text-slate-400">
+              {{ column.title }}
+            </h3>
 
-          <ul class="mt-6 space-y-4 text-sm font-medium text-white/80">
-            <li>
-              <RouterLink to="/" class="hover:text-white">
-                {{ t("footer.faq") }}
-              </RouterLink>
-            </li>
-          </ul>
-        </div>
-
-        <div>
-          <h3 class="text-base font-bold">
-            {{ t("footer.products") }}
-          </h3>
-
-          <ul class="mt-6 space-y-4 text-sm font-medium text-white/80">
-            <li>
-              <RouterLink to="/" class="hover:text-white">
-                matchday app
-              </RouterLink>
-            </li>
-
-            <li>
-              <RouterLink to="/" class="hover:text-white">
-                ARENA POS
-              </RouterLink>
-            </li>
-          </ul>
-        </div>
-
-        <div>
-          <h3 class="text-base font-bold">
-            {{ t("footer.about") }}
-          </h3>
-
-          <ul class="mt-6 space-y-4 text-sm font-medium text-white/80">
-            <li>
-              <RouterLink to="/" class="hover:text-white">
-                {{ t("footer.aboutUs") }}
-              </RouterLink>
-            </li>
-
-            <li>
-              <RouterLink to="/" class="hover:text-white">
-                {{ t("footer.services") }}
-              </RouterLink>
-            </li>
-          </ul>
-        </div>
-
-        <div>
-          <h3 class="text-base font-bold">
-            {{ t("footer.contact") }}
-          </h3>
-
-          <ul class="mt-6 space-y-4 text-sm font-medium text-white/80">
-            <li>
-              <RouterLink to="/" class="hover:text-white">
-                {{ t("footer.contactUs") }}
-              </RouterLink>
-            </li>
-
-            <li>
-              <RouterLink to="/" class="hover:text-white">
-                {{ t("footer.knowledge") }}
-              </RouterLink>
-            </li>
-          </ul>
+            <ul class="mt-4 space-y-3 text-sm text-slate-200">
+              <li v-for="link in column.links" :key="link.label">
+                <RouterLink :to="link.to" class="transition hover:text-emerald-300">
+                  {{ link.label }}
+                </RouterLink>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="bg-slate-50">
-      <div class="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-5 text-sm text-slate-500 md:flex-row md:items-center md:justify-between">
-        <p>
-          © {{ currentYear }} Matchday Hub Company Limited, All rights reserved
-        </p>
-
-        <RouterLink to="/" class="hover:text-red-600">
-          Terms & Privacy Policy
-        </RouterLink>
+      <div class="border-t border-white/10 px-6 py-4 text-sm text-slate-400 md:px-8">
+        <div class="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+          <p>© {{ currentYear }} Sport Booking. All rights reserved.</p>
+          <p>Designed for a more professional sports venue booking experience.</p>
+        </div>
       </div>
     </div>
   </footer>

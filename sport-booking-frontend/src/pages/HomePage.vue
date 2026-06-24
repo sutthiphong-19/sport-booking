@@ -1,17 +1,42 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from "vue";
-import {
-  getCompetitions,
-  type Competition,
-} from "@/services/competition.service";
+import { getCompetitions, type Competition } from "@/services/competition.service";
 
 const competitions = ref<Competition[]>([]);
 const loading = ref(false);
 const errorMessage = ref("");
 
-const competitionAnnouncements = computed(() => {
-  return competitions.value;
-});
+const competitionAnnouncements = computed(() => competitions.value.slice(0, 3));
+
+const highlights = [
+  { value: "20+", label: "สนามและคอร์ตยอดนิยม" },
+  { value: "3 steps", label: "ค้นหา เลือกเวลา และยืนยันการจอง" },
+  { value: "24/7", label: "เปิดเช็กตารางและประวัติได้ตลอดเวลา" },
+];
+
+const platformPoints = [
+  {
+    icon: "pi pi-compass",
+    title: "ค้นหาง่ายแบบมืออาชีพ",
+    description: "แยกประเภทสนาม ดูภาพรวมราคา และเปรียบเทียบบรรยากาศก่อนตัดสินใจได้เร็วขึ้น",
+  },
+  {
+    icon: "pi pi-calendar",
+    title: "วางแผนเวลาได้ชัดเจน",
+    description: "จัด flow การจองให้เข้าใจง่าย ตั้งแต่เลือกสนามไปจนถึงสรุปรายการ",
+  },
+  {
+    icon: "pi pi-verified",
+    title: "เช็กสถานะได้มั่นใจ",
+    description: "ติดตามประวัติการจองและขั้นตอนชำระเงินในหน้าตาเดียวกันอย่างเป็นระบบ",
+  },
+];
+
+const featuredSports = [
+  { name: "Football Arena", detail: "สนามหญ้าเทียมสำหรับแมตช์จริงและซ้อมทีม", tone: "from-emerald-500 to-lime-400" },
+  { name: "Badminton Court", detail: "คอร์ตในร่ม แสงดี พื้นมาตรฐาน พร้อมลงเล่น", tone: "from-sky-500 to-cyan-400" },
+  { name: "Volleyball Hall", detail: "โซนทีมเวิร์กสำหรับซ้อมหรือจัดกิจกรรมกลุ่ม", tone: "from-amber-500 to-orange-400" },
+];
 
 function getStatusLabel(status: Competition["status"]) {
   const statusMap: Record<Competition["status"], string> = {
@@ -36,9 +61,7 @@ function getStatusClass(status: Competition["status"]) {
 function formatDate(value: string) {
   if (!value) return "-";
 
-  return new Intl.DateTimeFormat("th-TH", {
-    dateStyle: "medium",
-  }).format(new Date(value));
+  return new Intl.DateTimeFormat("th-TH", { dateStyle: "medium" }).format(new Date(value));
 }
 
 function formatTime(value: string) {
@@ -69,165 +92,212 @@ onMounted(() => {
 </script>
 
 <template>
-  <section class="bg-emerald-700">
-    <div class="mx-auto max-w-7xl px-4 py-20 text-white">
-      <h1 class="max-w-3xl text-4xl font-bold leading-tight md:text-5xl">
-        ระบบจองสนามกีฬาออนไลน์
-      </h1>
+  <section class="page-container pb-6 pt-8 md:pt-10">
+    <div class="page-shell overflow-hidden !p-0">
+      <div class="grid gap-10 px-6 py-8 md:px-8 md:py-10 lg:grid-cols-[1.15fr_0.85fr] lg:items-center lg:px-10 lg:py-12">
+        <div class="relative">
+          <span class="eyebrow">Sport venue booking</span>
 
-      <p class="mt-4 max-w-2xl text-base text-emerald-50">
-        ค้นหาสนามกีฬา เลือกวันเวลา และจองสนามได้ง่ายในไม่กี่ขั้นตอน
-      </p>
+          <h1 class="mt-5 max-w-3xl text-4xl font-black tracking-tight text-slate-950 md:text-6xl md:leading-[1.02]">
+            จองสนามกีฬาให้ดูโปร
+            <span class="block text-emerald-700">ตั้งแต่หน้าแรกจนถึงยืนยันรายการ</span>
+          </h1>
 
-      <RouterLink
-        to="/fields"
-        class="mt-8 inline-flex items-center gap-2 rounded-lg bg-emerald-400 px-5 py-3 font-medium text-slate-900 transition hover:bg-emerald-300"
-      >
-        <i class="pi pi-search"></i>
-        ดูสนามทั้งหมด
-      </RouterLink>
-    </div>
-  </section>
+          <p class="mt-5 max-w-2xl text-base leading-8 text-slate-600 md:text-lg">
+            ค้นหาสนามที่เหมาะกับเกมของคุณ เปรียบเทียบราคาและรายละเอียดได้ชัด
+            พร้อมเข้าสู่ flow การจองที่อ่านง่ายและดูน่าเชื่อถือมากขึ้น
+          </p>
 
-  <section class="bg-slate-50 px-4 py-10">
-    <div class="mx-auto max-w-7xl">
-      <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm md:p-8">
-        <div class="mb-6 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-          <div>
-            <h2 class="text-2xl font-bold text-slate-900">
-              บอร์ดประกาศการแข่งขัน
-            </h2>
-            <p class="mt-1 text-sm text-slate-500">
-              ติดตามข่าวสารและการเปิดรับสมัครการแข่งขันกีฬาได้ที่นี่
-            </p>
+          <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+            <RouterLink
+              to="/fields"
+              class="inline-flex items-center justify-center gap-2 rounded-full bg-slate-950 px-6 py-3.5 text-sm font-bold text-white transition hover:-translate-y-0.5 hover:bg-emerald-700"
+            >
+              <i class="pi pi-search"></i>
+              สำรวจสนามทั้งหมด
+            </RouterLink>
+
+            <RouterLink
+              to="/find-friends"
+              class="inline-flex items-center justify-center gap-2 rounded-full border border-emerald-200 bg-white px-6 py-3.5 text-sm font-bold text-emerald-800 transition hover:border-emerald-300 hover:bg-emerald-50"
+            >
+              <i class="pi pi-users"></i>
+              หาเพื่อนร่วมทีม
+            </RouterLink>
           </div>
 
-          <RouterLink
-            to="/fields"
-            class="inline-flex items-center justify-center gap-2 rounded-lg border border-emerald-500 px-4 py-2 text-sm font-medium text-emerald-700 transition hover:bg-emerald-50"
-          >
-            <i class="pi pi-megaphone"></i>
-            ดูประกาศทั้งหมด
-          </RouterLink>
-        </div>
-
-        <div
-          v-if="loading"
-          class="rounded-2xl border border-dashed border-slate-300 bg-slate-50 p-8 text-center text-slate-500"
-        >
-          กำลังโหลดข้อมูลการแข่งขัน...
-        </div>
-
-        <div
-          v-else-if="errorMessage"
-          class="rounded-2xl border border-red-200 bg-red-50 p-8 text-center text-red-600"
-        >
-          {{ errorMessage }}
-        </div>
-
-        <div
-          v-else-if="competitionAnnouncements.length === 0"
-          class="rounded-2xl border border-dashed border-slate-300 bg-slate-50 p-8 text-center text-slate-500"
-        >
-          ยังไม่มีประกาศการแข่งขัน
-        </div>
-
-        <div v-else class="grid gap-4 lg:grid-cols-3">
-          <article
-            v-for="announcement in competitionAnnouncements"
-            :key="announcement.id"
-            class="rounded-2xl border border-slate-200 bg-slate-50 p-5 transition hover:border-emerald-300 hover:bg-emerald-50/50"
-          >
-            <span
-              class="inline-flex rounded-full px-3 py-1 text-xs font-semibold"
-              :class="getStatusClass(announcement.status)"
+          <div class="mt-10 grid gap-4 md:grid-cols-3">
+            <div
+              v-for="item in highlights"
+              :key="item.label"
+              class="rounded-[1.5rem] border border-slate-200/80 bg-white/90 p-4 shadow-sm"
             >
-              {{ getStatusLabel(announcement.status) }}
-            </span>
+              <p class="text-xl font-black text-slate-950">{{ item.value }}</p>
+              <p class="mt-1 text-sm leading-6 text-slate-500">{{ item.label }}</p>
+            </div>
+          </div>
+        </div>
 
-            <h3 class="mt-3 text-lg font-bold text-slate-900">
-              {{ announcement.title }}
-            </h3>
+        <div class="relative">
+          <div class="absolute inset-x-6 -top-6 h-32 rounded-full bg-emerald-300/40 blur-3xl"></div>
 
-            <div class="mt-3 space-y-1 text-sm text-slate-600">
-              <p>
-                <span class="font-semibold text-slate-800">วันที่:</span>
-                {{ formatDate(announcement.startDate) }}
-              </p>
-
-              <p>
-                <span class="font-semibold text-slate-800">เวลา:</span>
-                {{ formatTime(announcement.startDate) }} -
-                {{ formatTime(announcement.endDate) }}
-              </p>
-
-              <p>
-                <span class="font-semibold text-slate-800">สถานที่:</span>
-                {{ announcement.location || "-" }}
-              </p>
-
-              <p>
-                <span class="font-semibold text-slate-800">จำนวนทีม:</span>
-                {{ announcement._count?.applications ?? 0 }}
-                /
-                {{ announcement.maxTeams ?? "ไม่จำกัด" }}
-              </p>
+          <div class="relative rounded-[2rem] bg-slate-950 p-5 text-white shadow-[0_28px_60px_rgba(15,23,42,0.22)] md:p-6">
+            <div class="flex items-center justify-between rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
+              <div>
+                <p class="text-xs uppercase tracking-[0.24em] text-emerald-200">Live dashboard</p>
+                <p class="mt-1 text-sm font-semibold text-slate-100">Ready for next booking</p>
+              </div>
+              <span class="rounded-full bg-emerald-400/20 px-3 py-1 text-xs font-bold text-emerald-200">
+                Available
+              </span>
             </div>
 
-            <p class="mt-3 line-clamp-3 text-sm leading-6 text-slate-600">
-              {{ announcement.description }}
-            </p>
-
-            <div class="mt-5 flex flex-wrap gap-2">
-              <RouterLink
-                :to="`/announcements/${announcement.id}`"
-                class="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-white"
+            <div class="mt-5 space-y-4">
+              <div
+                v-for="sport in featuredSports"
+                :key="sport.name"
+                class="rounded-[1.5rem] border border-white/10 bg-white/5 p-4"
               >
-                ดูรายละเอียด
-              </RouterLink>
-
-              <RouterLink
-                :to="`/announcements/${announcement.id}/register`"
-                class="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-emerald-700"
-              >
-                สมัครเข้าร่วม
-              </RouterLink>
+                <div class="flex items-start gap-4">
+                  <div class="h-14 w-14 rounded-2xl bg-gradient-to-br" :class="sport.tone"></div>
+                  <div class="flex-1">
+                    <div class="flex items-start justify-between gap-3">
+                      <div>
+                        <p class="text-sm font-black uppercase tracking-[0.2em] text-slate-300">Featured</p>
+                        <h3 class="mt-1 text-lg font-bold text-white">{{ sport.name }}</h3>
+                      </div>
+                      <span class="rounded-full bg-white/10 px-3 py-1 text-xs text-slate-200">Prime</span>
+                    </div>
+                    <p class="mt-2 text-sm leading-6 text-slate-300">{{ sport.detail }}</p>
+                  </div>
+                </div>
+              </div>
             </div>
-          </article>
+
+            <div class="mt-5 rounded-[1.5rem] border border-emerald-400/20 bg-emerald-400/10 p-4">
+              <p class="text-sm font-semibold text-emerald-100">Smart flow</p>
+              <p class="mt-1 text-sm leading-6 text-emerald-50/90">
+                หน้าเว็บถูกจัดลำดับข้อมูลใหม่ให้มองหา CTA, ราคา, และรายละเอียดสนามได้เร็วขึ้น
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="bg-slate-50 px-4 py-16">
-    <div class="mx-auto max-w-7xl text-center">
-      <h2 class="text-3xl font-bold text-slate-900">
-        พันธมิตรของเรา
-      </h2>
+  <section class="page-container pt-2">
+    <div class="grid gap-5 lg:grid-cols-3">
+      <article
+        v-for="point in platformPoints"
+        :key="point.title"
+        class="card group transition duration-300 hover:-translate-y-1 hover:border-emerald-200"
+      >
+        <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-700 transition group-hover:bg-emerald-600 group-hover:text-white">
+          <i :class="[point.icon, 'text-xl']"></i>
+        </div>
+        <h2 class="mt-5 text-xl font-black text-slate-950">{{ point.title }}</h2>
+        <p class="mt-3 text-sm leading-7 text-slate-600">{{ point.description }}</p>
+      </article>
+    </div>
+  </section>
 
-      <p class="mt-3 text-slate-500">
-        เครือข่ายผู้มีบทบาทในวงการกีฬาที่ร่วมพัฒนาและขับเคลื่อน Sport Booking
-      </p>
+  <section class="page-container">
+    <div class="page-shell">
+      <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+        <div>
+          <span class="eyebrow">Competition updates</span>
+          <h2 class="mt-4 text-3xl font-black tracking-tight text-slate-950">
+            กระดานประกาศการแข่งขัน
+          </h2>
+          <p class="mt-3 max-w-2xl text-sm leading-7 text-slate-600">
+            ติดตามรายการที่เปิดรับสมัครและกิจกรรมพิเศษได้ในบล็อกเดียวกัน เพื่อให้หน้าแรกมีทั้งภาพลักษณ์และข้อมูลจริงที่ใช้งานได้
+          </p>
+        </div>
 
-      <div class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-6">
-        <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-          Dhipaya Insurance
-        </div>
-        <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-          Pay Solutions
-        </div>
-        <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-          PB Sport
-        </div>
-        <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-          BWT
-        </div>
-        <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-          DEPA
-        </div>
-        <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-          Sport Partner
-        </div>
+        <RouterLink
+          to="/fields"
+          class="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-white px-5 py-3 text-sm font-bold text-emerald-800 transition hover:bg-emerald-50"
+        >
+          <i class="pi pi-arrow-right"></i>
+          ไปหน้าสนามทั้งหมด
+        </RouterLink>
+      </div>
+
+      <div
+        v-if="loading"
+        class="mt-8 rounded-[1.5rem] border border-dashed border-slate-300 bg-slate-50 p-8 text-center text-slate-500"
+      >
+        กำลังโหลดข้อมูลการแข่งขัน...
+      </div>
+
+      <div
+        v-else-if="errorMessage"
+        class="mt-8 rounded-[1.5rem] border border-red-200 bg-red-50 p-8 text-center text-red-600"
+      >
+        {{ errorMessage }}
+      </div>
+
+      <div
+        v-else-if="competitionAnnouncements.length === 0"
+        class="mt-8 rounded-[1.5rem] border border-dashed border-slate-300 bg-slate-50 p-8 text-center text-slate-500"
+      >
+        ยังไม่มีประกาศการแข่งขัน
+      </div>
+
+      <div v-else class="mt-8 grid gap-5 lg:grid-cols-3">
+        <article
+          v-for="announcement in competitionAnnouncements"
+          :key="announcement.id"
+          class="rounded-[1.75rem] border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:border-emerald-200"
+        >
+          <div class="flex items-center justify-between gap-3">
+            <span
+              class="inline-flex rounded-full px-3 py-1 text-xs font-bold"
+              :class="getStatusClass(announcement.status)"
+            >
+              {{ getStatusLabel(announcement.status) }}
+            </span>
+            <span class="text-xs font-semibold uppercase tracking-[0.24em] text-slate-400">
+              Event
+            </span>
+          </div>
+
+          <h3 class="mt-4 text-xl font-black text-slate-950">{{ announcement.title }}</h3>
+
+          <div class="mt-4 space-y-2 text-sm text-slate-600">
+            <p><span class="font-bold text-slate-800">วันที่:</span> {{ formatDate(announcement.startDate) }}</p>
+            <p>
+              <span class="font-bold text-slate-800">เวลา:</span>
+              {{ formatTime(announcement.startDate) }} - {{ formatTime(announcement.endDate) }}
+            </p>
+            <p><span class="font-bold text-slate-800">สถานที่:</span> {{ announcement.location || "-" }}</p>
+            <p>
+              <span class="font-bold text-slate-800">ทีม:</span>
+              {{ announcement._count?.applications ?? 0 }} / {{ announcement.maxTeams ?? "ไม่จำกัด" }}
+            </p>
+          </div>
+
+          <p class="mt-4 line-clamp-3 text-sm leading-7 text-slate-600">
+            {{ announcement.description }}
+          </p>
+
+          <div class="mt-6 flex gap-3">
+            <RouterLink
+              :to="`/announcements/${announcement.id}`"
+              class="inline-flex flex-1 items-center justify-center rounded-full border border-slate-200 px-4 py-3 text-sm font-bold text-slate-700 transition hover:bg-slate-50"
+            >
+              ดูรายละเอียด
+            </RouterLink>
+
+            <RouterLink
+              :to="`/announcements/${announcement.id}/register`"
+              class="inline-flex flex-1 items-center justify-center rounded-full bg-emerald-600 px-4 py-3 text-sm font-bold text-white transition hover:bg-emerald-700"
+            >
+              สมัครเข้าร่วม
+            </RouterLink>
+          </div>
+        </article>
       </div>
     </div>
   </section>

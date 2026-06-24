@@ -1,16 +1,19 @@
 <script setup lang="ts">
+import AppFooter from "@/components/common/AppFooter.vue";
 import AppHeader from "@/components/common/AppHeader.vue";
 import BackButton from "@/components/common/BackButton.vue";
 </script>
 
 <template>
-  <div class="min-h-screen bg-slate-50">
+  <div class="relative min-h-screen">
     <AppHeader />
 
     <BackButton />
 
-    <main>
+    <main class="relative z-10">
       <RouterView />
     </main>
+
+    <AppFooter />
   </div>
 </template>

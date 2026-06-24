@@ -146,6 +146,16 @@ const router = createRouter({
       name: "not-found",
       component: NotFoundPage,
     },
+    {
+      path: "/shoe-rental",
+      name: "shoe-rental",
+      component: () => import("@/pages/ShoeRentalPage.vue"),
+    },
+    {
+      path: "/find-friends",
+      name: "find-friends",
+      component: () => import("@/pages/FindFriendsPage.vue"),
+    },
   ],
 });
 
